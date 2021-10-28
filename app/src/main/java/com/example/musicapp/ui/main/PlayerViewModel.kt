@@ -32,6 +32,7 @@ class PlayerViewModel : ViewModel() {
 
                     when (it.state) {
                         PlaybackStateCompat.STATE_PLAYING -> callbackPlay()
+                        PlaybackStateCompat.STATE_PAUSED -> callbackPause()
                         PlaybackStateCompat.STATE_SKIPPING_TO_NEXT -> callbackNext()
                         PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS -> callbackPrev()
                         else -> callbackUnknown()
@@ -52,7 +53,6 @@ class PlayerViewModel : ViewModel() {
                         )
                         mediaController?.registerCallback(callback as MediaControllerCompat.Callback)
                         callback?.onPlaybackStateChanged(mediaController?.playbackState)
-                        // mediaController?.transportControls?.play()
                         id?.let { playFromPosition(it) }
 
                     } catch (e: RemoteException) {
@@ -89,6 +89,10 @@ class PlayerViewModel : ViewModel() {
         mediaController?.transportControls?.play()
     }
 
+    fun pausePlaying() {
+        mediaController?.transportControls?.pause()
+    }
+
     fun previousTrack() {
         mediaController?.transportControls?.skipToPrevious()
     }
@@ -104,15 +108,19 @@ class PlayerViewModel : ViewModel() {
         val description = mediaController?.metadata?.description ?: return
         bitmapView?.setImageBitmap(description.iconBitmap)
         titleTextView?.text = description.title
-
     }
 
-    fun callbackPrev() {
+    fun callbackPause() {
         val description = mediaController?.metadata?.description ?: return
 
         bitmapView?.setImageBitmap(description.iconBitmap)
         titleTextView?.text = description.title
+    }
 
+    fun callbackPrev() {
+        val description = mediaController?.metadata?.description ?: return
+        bitmapView?.setImageBitmap(description.iconBitmap)
+        titleTextView?.text = description.title
     }
 
     fun callbackUnknown() {

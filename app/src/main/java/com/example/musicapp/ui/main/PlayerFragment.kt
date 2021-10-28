@@ -19,6 +19,7 @@ class PlayerFragment : Fragment() {
     private var _binding: PlayerFragmentBinding? = null
     private val binding get() = _binding!!
     var playButton: ImageButton? = null
+    var pauseButton: ImageButton? = null
     var prevButton: ImageButton? = null
     var nextButton: ImageButton? = null
     var artistTextView: TextView? = null
@@ -36,6 +37,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         playButton = binding.playButton
+        pauseButton = binding.pauseButton
         prevButton = binding.prevButton
         nextButton = binding.nextButton
         playerViewModel.bitmapView = binding.trackImage
@@ -47,6 +49,7 @@ class PlayerFragment : Fragment() {
         }
         prevButton?.setOnClickListener { playerViewModel.previousTrack()}
         playButton?.setOnClickListener { playerViewModel.playTrack()}
+        pauseButton?.setOnClickListener { playerViewModel.pausePlaying() }
         nextButton?.setOnClickListener { playerViewModel.nextTrack()}
 
         Glide.with(requireActivity())

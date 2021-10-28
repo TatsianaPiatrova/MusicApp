@@ -199,7 +199,7 @@ class TrackService : MediaBrowserServiceCompat() {
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?
-    ): BrowserRoot? {
+    ): BrowserRoot {
         return BrowserRoot("Root", null)
     }
 
@@ -318,9 +318,7 @@ class TrackService : MediaBrowserServiceCompat() {
         }
 
         private fun playTrack(trackByIndex: Track) {
-            // if (!exoPlayer?.playWhenReady!!) {
             startService(Intent(applicationContext, TrackService::class.java))
-            //val track = musicCatalog.currentTrack
             updateMetadataFromTrack(trackByIndex)
             prepareToPlay(Uri.parse(trackByIndex.trackUri))
 
@@ -346,7 +344,6 @@ class TrackService : MediaBrowserServiceCompat() {
                 IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
             )
             exoPlayer?.playWhenReady = true
-            //  }
 
             updatePlaybackState(PlaybackStateCompat.STATE_PLAYING)
 
@@ -497,8 +494,6 @@ class TrackService : MediaBrowserServiceCompat() {
             Log.d("TAG", ">>>>>>>>>>>>> onMediaButtonEvent ${mediaButtonEvent?.action}")
             return super.onMediaButtonEvent(mediaButtonEvent)
         }
-
-
     }
 
     val becomingNoiseReceiver = object : BroadcastReceiver() {
